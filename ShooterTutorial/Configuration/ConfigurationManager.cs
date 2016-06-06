@@ -5,12 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
 using Windows.Data.Json;
+using System.Reflection;
 
 namespace ShooterTutorial.Configuration
 {
     class ConfigurationManager
     {
         private static List<ConfigurationValueBase> ConfigurationTable = new List<ConfigurationValueBase>();
+        private static bool ItIsInitialised;
 
         public static ConfigurationValue<T> create<T>( string name, T value, string description )
         {
@@ -150,6 +152,39 @@ namespace ShooterTutorial.Configuration
             foreach( var value in ConfigurationTable )
             {
                 Debug.WriteLine(value.Name + " : " + value.Description);
+            }
+        }
+
+        private static void Initialize()
+        {
+            Assembly assembly = typeof(ConfigurationManager).GetTypeInfo().Assembly;
+
+            foreach (Type type in assembly.DefinedTypes)
+            {
+                foreach (var field in type.DeclaredFields)
+                {
+                    if (field.IsStatic)
+                    {
+                        var attribute = field.GetCustomAttribute<Configuration>();
+
+                        if(attribute !=null)
+                        {
+                            switch (field.GetType().Name)
+                            {
+                                case "Int32":
+                                    {
+                                        ConfigurationValue<int> value = create<T>(attribute.Name, attribute.Description);
+
+                                        value.Set((int)field.GetValue(null));
+                                    }
+                                default:
+                                    break;
+                            }
+
+                        }
+
+                    }
+                }
             }
         }
     }
