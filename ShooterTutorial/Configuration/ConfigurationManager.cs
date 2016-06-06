@@ -12,11 +12,7 @@ namespace ShooterTutorial.Configuration
     class ConfigurationManager
     {
         private static List<ConfigurationValueBase> ConfigurationTable = new List<ConfigurationValueBase>();
-<<<<<<< HEAD
-        private static bool ItIsInitialised;
-=======
         private static bool ItIsInitialized = false;
->>>>>>> FishingCactus/master
 
         public static ConfigurationValue<T> create<T>( string name, string description )
         {
@@ -190,11 +186,36 @@ namespace ShooterTutorial.Configuration
                                         value.AddField(field);
                                     }
                                     break;
+                                case "String":
+                                    {
+                                        ConfigurationValue<string> value = create<string>(attribute.Name, attribute.Description);
 
+                                        value.Set((string)field.GetValue(null));
+
+                                        value.AddField(field);
+                                    }
+                                    break;
+                                case "Bool":
+                                    {
+                                        ConfigurationValue<bool> value = create<bool>(attribute.Name, attribute.Description);
+
+                                        value.Set((bool)field.GetValue(null));
+
+                                        value.AddField(field);
+                                    }
+                                    break;
+                                case "Float":
+                                    {
+                                        ConfigurationValue<float> value = create<float>(attribute.Name, attribute.Description);
+
+                                        value.Set((float)field.GetValue(null));
+
+                                        value.AddField(field);
+                                    }
+                                    break;
                                 default:
                                     break;
                             }
-                            
                         }
                     }
                 }
