@@ -10,15 +10,15 @@ namespace ShooterTutorial.GameObjects
     class WeaponManager
     {
         List<TypeInfo> _weaponTypeList = new List<TypeInfo>();
-        Random random;
+        Random random = new Random();
 
         public WeaponManager()
         {
             Assembly currentAssembly = typeof(WeaponManager).GetTypeInfo().Assembly;
 
-            foreach (var type in currentAssembly.DefinedTypes)
+            foreach( var type in currentAssembly.DefinedTypes)
             {
-                if (type.GetCustomAttribute(typeof(WeaponDefinitionAttribute), true) != null)
+                if( type.GetCustomAttribute(typeof(WeaponDefinitionAttribute)) != null)
                 {
                     _weaponTypeList.Add(type);
                 }
@@ -29,7 +29,7 @@ namespace ShooterTutorial.GameObjects
         {
             int i = random.Next(_weaponTypeList.Count);
 
-            return (Weapon)Activator.CreateInstance(_weaponTypeList[i].AsType(), new object[] { game, player });
+             return (Weapon)Activator.CreateInstance((_weaponTypeList[i]).AsType(), new object[] { game, player });
         }
     }
 }
