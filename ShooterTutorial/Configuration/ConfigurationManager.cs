@@ -186,12 +186,6 @@ namespace ShooterTutorial.Configuration
                                         value.AddField(field);
                                     }
                                     break;
-                                case "String":
-                                    {
-                                        ConfigurationValue<string> value = create<string>(attribute.Name, attribute.Description);
-
-                                        value.Set((string)field.GetValue(null));
-
                                 case "Single":
                                     {
                                         ConfigurationValue<float> value = create<float>(attribute.Name, attribute.Description);
@@ -202,17 +196,7 @@ namespace ShooterTutorial.Configuration
                                     }
                                     break;
 
-                                case "String":
-                                    {
-                                        ConfigurationValue<string> value = create<string>(attribute.Name, attribute.Description);
-
-                                        value.Set((string)field.GetValue(null));
-
-                                        value.AddField(field);
-                                    }
-                                    break;
-
-                                case "Boolean":
+                               case "Boolean":
                                     {
                                         ConfigurationValue<bool> value = create<bool>(attribute.Name, attribute.Description);
 
