@@ -95,7 +95,7 @@ namespace ShooterTutorial.GameObjects
 
         //private static ConfigurationValue<int> InitialHealth = ConfigurationManager.create( "enemy.Health", 3, "Enemy health at init" );
 
-        [Configuration.Configuration("enemy.Health", Description = "Enemy healt at init)];
+        [Configuration.Configuration("enemy.Health", Description = "Enemy health at init")]
         private static int InitialHealth = 3;
 
         public void Initialize(

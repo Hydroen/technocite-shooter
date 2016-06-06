@@ -12,9 +12,13 @@ namespace ShooterTutorial.Configuration
     class ConfigurationManager
     {
         private static List<ConfigurationValueBase> ConfigurationTable = new List<ConfigurationValueBase>();
+<<<<<<< HEAD
         private static bool ItIsInitialised;
+=======
+        private static bool ItIsInitialized = false;
+>>>>>>> FishingCactus/master
 
-        public static ConfigurationValue<T> create<T>( string name, T value, string description )
+        public static ConfigurationValue<T> create<T>( string name, string description )
         {
             ConfigurationValue<T> configuration_value;
 
@@ -22,7 +26,7 @@ namespace ShooterTutorial.Configuration
 
             if (configuration_value == null)
             {
-                configuration_value = new ConfigurationValue<T>(name, value, description);
+                configuration_value = new ConfigurationValue<T>(name, description);
 
                 ConfigurationTable.Add(configuration_value);
             }
@@ -98,6 +102,12 @@ namespace ShooterTutorial.Configuration
 
         public static void LoadConfiguration( JsonObject content )
         {
+            if( !ItIsInitialized )
+            {
+                ItIsInitialized = true;
+                Initialize();
+            }
+
             LoadConfigurationPrefixed(content, "");
         }
 
@@ -159,30 +169,33 @@ namespace ShooterTutorial.Configuration
         {
             Assembly assembly = typeof(ConfigurationManager).GetTypeInfo().Assembly;
 
-            foreach (Type type in assembly.DefinedTypes)
+            foreach( TypeInfo type in assembly.DefinedTypes )
             {
-                foreach (var field in type.DeclaredFields)
+                foreach( var field in type.DeclaredFields)
                 {
-                    if (field.IsStatic)
+                    if( field.IsStatic )
                     {
                         var attribute = field.GetCustomAttribute<Configuration>();
 
-                        if(attribute !=null)
+                        if (attribute != null)
                         {
-                            switch (field.GetType().Name)
+                            switch (field.FieldType.Name)
                             {
                                 case "Int32":
                                     {
-                                        ConfigurationValue<int> value = create<T>(attribute.Name, attribute.Description);
+                                        ConfigurationValue<int> value = create<int>(attribute.Name, attribute.Description);
 
-                                        value.Set((int)field.GetValue(null));
+                                        value.Set( (int)field.GetValue(null) );
+
+                                        value.AddField(field);
                                     }
+                                    break;
+
                                 default:
                                     break;
                             }
-
+                            
                         }
-
                     }
                 }
             }
